@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import sqlite3
 import os
 import datetime
@@ -84,7 +84,7 @@ init_db()
 # ── Serve Frontend ──────────────────────────────────────────────
 @app.route('/')
 def serve_index():
-    return send_from_directory(os.path.dirname(os.path.abspath(__file__)), 'index.html')
+    return render_template('index.html')
 
 # ── Agent Pipeline Keywords ─────────────────────────────────────
 CRIME_KEYWORDS = [
@@ -408,8 +408,11 @@ def generate_report(complaint_id):
 
 # ── Run ─────────────────────────────────────────────────────────
 if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+
     print("=" * 50)
     print("  Voice2Justice Flask Server")
-    print("  Open http://127.0.0.1:5000 in your browser")
+    print(f"  Running on port {port}")
     print("=" * 50)
-    app.run(debug=True, host='127.0.0.1', port=5000)
+
+    app.run(debug=True, host='0.0.0.0', port=port)
