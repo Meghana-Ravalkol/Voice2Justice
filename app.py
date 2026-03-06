@@ -6,7 +6,10 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-app = Flask(__name__)
+# Update this at the top of app.py
+app = Flask(__name__, 
+            template_folder='.', # Tells Flask index.html is in the root folder
+            static_folder='.')
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'complaints.db')
 
 # ── Email Setup ──────────────────────────────────────────────────
@@ -57,9 +60,16 @@ def send_complaint_email(to_email, complaint_id, category, text, summary, sectio
 
 # ── Database Setup ──────────────────────────────────────────────
 def init_db():
+    # Ensure the directory for the DB exists
+    db_dir = os.path.dirname(DB_PATH)
+    if not os.path.exists(db_dir):
+        os.makedirs(db_dir)
+
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    c.execute('DROP TABLE IF EXISTS complaints') # Reset DB for new schema
+    # REMOVE OR COMMENT OUT THE DROP LINE:
+    # c.execute('DROP TABLE IF EXISTS complaints') 
+    
     c.execute('''
         CREATE TABLE IF NOT EXISTS complaints (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
