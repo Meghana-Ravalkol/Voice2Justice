@@ -1600,8 +1600,9 @@
                 // Basic location check
                 const locRegex = /(street|road|cross|layout|nagar|colony|block|market|area|park|junction|circle|highway|avenue|sector|phase|st\.|rd\.)/i;
                 
+                // If you want to keep the requirement but make it clearer:
                 if (!locRegex.test(text)) {
-                    alert("Location is missing! Please mention a specific location in your complaint.");
+                    alert("Please mention a specific location (e.g., MG Road, Sector 4) so we can route your complaint correctly.");
                     outputPlaceholder.style.display = 'flex';
                     return; 
                 }
