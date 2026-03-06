@@ -407,12 +407,9 @@ def generate_report(complaint_id):
     return html
 
 # ── Run ─────────────────────────────────────────────────────────
-if __name__ == '__main__':
+import os
+
+if __name__ == "__main__":
+    # Use the port assigned by Render, or default to 5000 for local testing
     port = int(os.environ.get("PORT", 5000))
-
-    print("=" * 50)
-    print("  Voice2Justice Flask Server")
-    print(f"  Running on port {port}")
-    print("=" * 50)
-
-    app.run(debug=True, host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port)
