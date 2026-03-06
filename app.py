@@ -124,9 +124,8 @@ def process_complaint():
         final_location = gps_location
         
         
-    if not final_location or "denied" in final_location.lower() or "unavailable" in final_location.lower() or "not supported" in final_location.lower():
-        return jsonify({'status': 'error', 'message': 'Location access is mandatory. Please enable GPS or specify a location in your complaint.'}), 400
-
+    if not final_location:
+        final_location = "Location not specified"
     # 1. Classifier Agent
     crime_score = sum(1 for kw in CRIME_KEYWORDS if kw in text_lower)
     civic_score = sum(1 for kw in CIVIC_KEYWORDS if kw in text_lower)
