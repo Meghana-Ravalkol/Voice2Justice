@@ -101,7 +101,6 @@ CIVIC_KEYWORDS = [
 # ── Process Complaint API ──────────────────────────────────────
 @app.route('/api/process', methods=['POST'])
 def process_complaint():
-    print("API HIT")
     data = request.get_json(force=True)
     text = data.get('text', '').strip()
     gps_location = data.get('location', '')

@@ -1591,29 +1591,33 @@
             });
 
             processBtn.addEventListener('click', async () => {
-                const text = demoInput.value.trim();
+                const text = demoInput.value.trim(); // This is the variable name used below
                 if (!text) { alert("Please describe an incident first."); return; }
 
                 outputPlaceholder.style.display = 'none';
                 outputResult.style.display = 'none';
 
+                // Basic location check
                 const locRegex = /(street|road|cross|layout|nagar|colony|block|market|area|park|junction|circle|highway|avenue|sector|phase|st\.|rd\.)/i;
-                let gpsLocation = "";
-
+                
                 if (!locRegex.test(text)) {
-                    alert("Location is missing! Please mention a specific location in your complaint (e.g., Street, Road, Area, Colony).");
+                    alert("Location is missing! Please mention a specific location in your complaint.");
                     outputPlaceholder.style.display = 'flex';
-                    return; // Stop submission and wait for user to add location
+                    return; 
                 }
 
                 processingState.style.display = 'flex';
                 processingText.innerText = "Connecting to Flask Agent API...";
 
                 try {
-                    const response = await fetch('/api/process', {
+                    const response = await fetch('/api/process', { // Relative path for Render
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ text: complaintText, location: userLocation })
+                        // FIXED: Using 'text' variable and a placeholder for location
+                        body: JSON.stringify({ 
+                            text: text, 
+                            location: "Detected via Text Analysis" 
+                        })
                     });
 
                     if (!response.ok) {
@@ -1639,7 +1643,11 @@
                 } catch (error) {
                     console.error('Error:', error);
                     processingState.style.display = 'none';
-                    const errorMsg = error.message && error.message.includes('Location') ? error.message : "Connection Error. Ensure Flask is running: python app.py";
+                    // Improved error messaging
+                    const errorMsg = error.message.includes('Unexpected token') 
+                        ? "Server returned an invalid response. Check Flask logs." 
+                        : error.message;
+                        
                     outputResult.innerHTML = `<div style="color:#ef4444;padding:1rem"><i class="fa-solid fa-triangle-exclamation"></i> ${errorMsg}</div>`;
                     outputResult.style.display = 'flex';
                 }
