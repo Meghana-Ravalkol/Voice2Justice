@@ -67,7 +67,8 @@ def init_db():
 
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    # REMOVE OR COMMENT OUT THE DROP LINE:
+    
+    # REMOVE OR COMMENT OUT THIS LINE:
     # c.execute('DROP TABLE IF EXISTS complaints') 
     
     c.execute('''
