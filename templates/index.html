@@ -1610,7 +1610,7 @@
                 processingText.innerText = "Connecting to Flask Agent API...";
 
                 try {
-                    const response = await fetch("/process", {
+                    const response = await fetch("/api/process", {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ text: text, location: gpsLocation })
